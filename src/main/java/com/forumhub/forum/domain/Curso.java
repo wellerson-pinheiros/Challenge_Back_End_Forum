@@ -2,6 +2,7 @@ package com.forumhub.forum.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
 
@@ -10,7 +11,7 @@ import java.util.Objects;
 public class Curso {
 
     @Id()
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank(message =  "The name of this curso cannot be empty.")
@@ -19,16 +20,18 @@ public class Curso {
     @Column(length = 300)
     private String descricao;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
 
     public Curso() {}
 
-    public Curso(Long id, String nome, String descricao) {
+    public Curso(Long id, String nome, String descricao, Categoria categoria) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
+        this.categoria = categoria;
     }
 
 
@@ -56,6 +59,15 @@ public class Curso {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
 
     @Override
     public boolean equals(Object o) {

@@ -2,6 +2,7 @@ package com.forumhub.forum.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -12,7 +13,7 @@ import java.util.Set;
 public class Categoria {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank(message = "The name of this category cannot be empty.")
@@ -22,14 +23,27 @@ public class Categoria {
     @Column(length = 300)
     private String descricao;
 
+
+    private boolean ativo = true;
+
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Curso> curso = new HashSet<Curso>();
+    private Set<Curso> cursos = new HashSet<>();
 
     public Categoria() {
     }
 
     public Categoria(Long id, String nome, String descricao) {
         this.id = id;
+        this.nome = nome;
+        this.descricao = descricao;
+    }
+
+    public Categoria(
+            @NotBlank(message = "O nome não pode ser nulo")
+            String nome,
+            @Size(max = 300, message = "Descrição deve ter no máximo 300 caracteres" )
+            String descricao) {
+
         this.nome = nome;
         this.descricao = descricao;
     }
@@ -56,6 +70,28 @@ public class Categoria {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public void addCursos(Curso curso) {
+        cursos.add(curso);
+        curso.setCategoria(this);
+    }
+
+    public void removeCurso(Curso curso) {
+        cursos.remove(curso);
+        curso.setCategoria(null);
+    }
+
+    public Set<Curso> getCursos() {
+        return cursos;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
     }
 
     @Override

@@ -1,0 +1,2 @@
+ALTER TABLE tb_categorias
+ADD COLUMN ativo BOOLEAN DEFAULT TRUE ;
