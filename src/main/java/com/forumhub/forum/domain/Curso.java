@@ -20,6 +20,9 @@ public class Curso {
     @Column(length = 300)
     private String descricao;
 
+    @Column(nullable = true)
+    private Boolean ativo = true;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoria_id", nullable = false)
@@ -68,6 +71,13 @@ public class Curso {
         this.categoria = categoria;
     }
 
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
 
     @Override
     public boolean equals(Object o) {

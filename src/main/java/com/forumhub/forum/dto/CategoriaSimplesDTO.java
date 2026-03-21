@@ -14,4 +14,6 @@ public record CategoriaSimplesDTO (
     public CategoriaSimplesDTO (Categoria categoria) {
        this(categoria.getNome(), categoria.getDescricao());
     }
+
+
 }
