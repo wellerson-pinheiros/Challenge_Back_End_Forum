@@ -1,0 +1,51 @@
+---- ===============================
+---- 1️⃣ Adicionando coluna 'status' no Topico
+---- ===============================
+--ALTER TABLE TB_TOPICO
+--ADD COLUMN status VARCHAR(20) DEFAULT 'RASCUNHO';
+--
+---- ===============================
+---- 3️⃣ Criando tabela TB_PERFIL
+---- ===============================
+--CREATE TABLE IF NOT EXISTS TB_PERFIL (
+--    id BIGSERIAL PRIMARY KEY,
+--    nome VARCHAR(100) UNIQUE NOT NULL
+--);
+--
+---- ===============================
+---- 4️⃣ Criando tabela TB_TOPICO
+---- (caso ainda não exista; se já existe, apenas coluna 'status' foi adicionada)
+---- ===============================
+--CREATE TABLE IF NOT EXISTS TB_TOPICO (
+--    id BIGSERIAL PRIMARY KEY,
+--    titulo VARCHAR(250) NOT NULL,
+--    mensagem TEXT,
+--    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--    status VARCHAR(20) DEFAULT 'RASCUNHO',
+--    curso_id BIGINT NOT NULL,
+--    CONSTRAINT fk_topico_curso
+--        FOREIGN KEY (curso_id) REFERENCES TB_CURSOS(id)
+--);
+--
+---- ===============================
+---- 5️⃣ Criando tabela TB_RESPOSTAS
+---- ===============================
+--CREATE TABLE IF NOT EXISTS TB_RESPOSTAS (
+--    id BIGSERIAL PRIMARY KEY,
+--    mensagem VARCHAR(300),
+--    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--    solucao BOOLEAN DEFAULT FALSE,
+--    topico_id BIGINT NOT NULL,
+--    curso_id BIGINT NOT NULL,
+--    CONSTRAINT fk_resposta_topico
+--        FOREIGN KEY (topico_id) REFERENCES TB_TOPICO(id),
+--    CONSTRAINT fk_resposta_curso
+--        FOREIGN KEY (curso_id) REFERENCES TB_CURSOS(id)
+--);
+--
+---- ===============================
+---- 6️⃣ Observações
+---- ===============================
+---- 1. As colunas status, ativo e solucao possuem valores padrão, evitando conflito em registros existentes.
+---- 2. As tabelas TB_PERFIL, TB_TOPICO e TB_RESPOSTAS são criadas somente se não existirem (IF NOT EXISTS).
+---- 3. A foreign key de Respostas para Curso pode ser mantida ou removida se preferir derivar do Topico.

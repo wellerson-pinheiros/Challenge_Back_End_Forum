@@ -2,6 +2,7 @@ package com.forumhub.forum.dto;
 
 import com.forumhub.forum.domain.Categoria;
 import com.forumhub.forum.domain.Curso;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 import java.util.Set;
@@ -9,6 +10,7 @@ import java.util.Set;
 public record CategoriaDTO(
 
         Long id,
+        @NotBlank(message = "O nome não pode ser vazio.")
         String nome,
         String descricao,
         List<CursoDTO> cursos ) {

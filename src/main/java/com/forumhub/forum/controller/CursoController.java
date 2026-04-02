@@ -1,8 +1,6 @@
 package com.forumhub.forum.controller;
 
-import com.forumhub.forum.domain.Curso;
 import com.forumhub.forum.dto.CursoDTO;
-import com.forumhub.forum.repositorio.cursoRepository;
 import com.forumhub.forum.service.CursoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -6,12 +6,11 @@ import com.forumhub.forum.dto.CursoDTO;
 import com.forumhub.forum.excecoes.ResourceAlreadyRegistered;
 import com.forumhub.forum.excecoes.ResourceNotFoundException;
 import com.forumhub.forum.repositorio.CategoriaRepositorio;
-import com.forumhub.forum.repositorio.cursoRepository;
+import com.forumhub.forum.repositorio.CursoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +18,7 @@ import java.util.Optional;
 public class CursoService {
 
     @Autowired
-    cursoRepository cursoRepository;
+    CursoRepository cursoRepository;
 
     @Autowired
     CategoriaRepositorio categoriaRepositorio;
