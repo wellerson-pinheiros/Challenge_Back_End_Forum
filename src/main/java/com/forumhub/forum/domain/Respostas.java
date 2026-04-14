@@ -1,5 +1,6 @@
 package com.forumhub.forum.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -18,29 +19,30 @@ public class Respostas {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "topico_id")
+    @JsonBackReference
     private Topico topico;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "curso_id")
-    private  Curso curso;
 
     @CreationTimestamp
+    @Column(name = "data_criacao")
     private Instant dataCriacao;
 
-    //private Usuario autor;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id")
+    private Usuario autor;
 
     @Column(nullable = true)
     private Boolean solucao;
 
     public Respostas(){}
 
-    public Respostas(long id, String mensagem, Topico topico, Curso curso, Instant dataCriacao, Boolean solucao) {
+    public Respostas(long id, String mensagem, Topico topico, Instant dataCriacao, Boolean solucao, Usuario autor) {
         this.id = id;
         this.mensagem = mensagem;
         this.topico = topico;
-        this.curso = curso;
         this.dataCriacao = dataCriacao;
         this.solucao = solucao;
+        this.autor = autor;
     }
 
     public long getId() {
@@ -59,20 +61,12 @@ public class Respostas {
         this.solucao = solucao;
     }
 
-    public Instant getDatacriacao() {
+    public Instant getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDatacriacao(Instant datacriacao) {
-        this.dataCriacao = datacriacao;
-    }
-
-    public Curso getCurso() {
-        return curso;
-    }
-
-    public void setCurso(Curso curso) {
-        this.curso = curso;
+    public void setDatacriacao(Instant dataCriacao) {
+        this.dataCriacao = dataCriacao;
     }
 
     public Topico getTopico() {
@@ -89,5 +83,17 @@ public class Respostas {
 
     public void setMensagem(String mensagem) {
         this.mensagem = mensagem;
+    }
+
+    public void setDataCriacao(Instant dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public Usuario getAutor() {
+        return autor;
+    }
+
+    public void setAutor(Usuario autor) {
+        this.autor = autor;
     }
 }

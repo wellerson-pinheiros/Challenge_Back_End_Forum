@@ -11,9 +11,10 @@ public record TopicoDTO(Long id,
                         String mensagem,
                         Instant dataCriacao,
                         Enum status ,
-                        Long cursoId) {
+                        Long cursoId,
+                        Long usuarioId) {
 
     public TopicoDTO(Topico topico) {
-        this(topico.getId(),topico.getTitulo(),topico.getMensagem(),topico.getDataCriacao(),topico.getStatus(),topico.getCurso().getId());
+        this(topico.getId(),topico.getTitulo(),topico.getMensagem(),topico.getDataCriacao(),topico.getStatus(),topico.getCurso().getId(),topico.getUsuario().getId());
     }
 }

@@ -1,0 +1,1 @@
+ALTER TABLE tb_respostas DROP COLUMN curso_id;

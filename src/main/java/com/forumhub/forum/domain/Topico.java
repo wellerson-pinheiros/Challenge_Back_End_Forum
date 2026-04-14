@@ -1,5 +1,6 @@
 package com.forumhub.forum.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.forumhub.forum.enums.StatusTopico;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -33,9 +34,14 @@ public class Topico {
     private Curso curso;
 
     @OneToMany(mappedBy = "topico", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Respostas> respostas;
 
-    //private Usuario autor;
+    @JsonManagedReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id")  // FK no banco
+    private Usuario usuario;
+
     public Topico() {}
 
     public Topico(Long id, String titulo, String mensagem, Instant dataCriacao, Curso curso, StatusTopico status, List<Respostas> respostas) {
@@ -102,5 +108,13 @@ public class Topico {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }

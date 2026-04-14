@@ -2,11 +2,13 @@ package com.forumhub.forum.service;
 
 import com.forumhub.forum.domain.Curso;
 import com.forumhub.forum.domain.Topico;
+import com.forumhub.forum.domain.Usuario;
 import com.forumhub.forum.dto.TopicoDTO;
 import com.forumhub.forum.enums.StatusTopico;
 import com.forumhub.forum.excecoes.ResourceNotFoundException;
 import com.forumhub.forum.repositorio.CursoRepository;
 import com.forumhub.forum.repositorio.TopicoRepository;
+import com.forumhub.forum.repositorio.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,9 @@ public class TopicoService {
 
     @Autowired
     private CursoRepository cursoRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public List<TopicoDTO> findAllTopicos() {
         List<Topico> topicos =  topicoRepository.findAll();
@@ -43,13 +48,14 @@ public class TopicoService {
     public void save(TopicoDTO topicoDTO) {
         // primeiro verificar se o curso existe
         Curso curso = cursoRepository.findById(topicoDTO.cursoId()).orElseThrow(()-> new ResourceNotFoundException("Curso não encontrado"));
-
+        Usuario usuario = usuarioRepository.findById(topicoDTO.usuarioId()).orElseThrow(()-> new ResourceNotFoundException("Usuário não encontrado"));
         Topico topico = new Topico();
         topico.setTitulo(topicoDTO.titulo());
         topico.setMensagem(topicoDTO.mensagem());
         topico.setDataCriacao(Instant.now());
         topico.setStatus(StatusTopico.valueOf("Publicado"));
         topico.setCurso(curso);
+        topico.setUsuario(usuario);
 
         topicoRepository.save(topico);
     }

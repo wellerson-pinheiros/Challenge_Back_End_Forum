@@ -1,6 +1,7 @@
 package com.forumhub.forum.dto;
 
 import com.forumhub.forum.domain.Curso;
+import com.forumhub.forum.domain.Respostas;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -19,5 +20,6 @@ public record CursoDTO(
         this(curso.getId(), curso.getNome(), curso.getDescricao(), new CategoriaSimplesDTO(curso.getCategoria().getNome(), curso.getCategoria().getDescricao()));
 
     }
+
 
 }
