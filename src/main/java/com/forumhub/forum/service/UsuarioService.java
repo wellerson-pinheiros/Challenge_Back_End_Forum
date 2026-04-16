@@ -48,7 +48,7 @@ public class UsuarioService {
     @Transactional
     public void save(Usuario usuario) {
         // 1. Buscamos o perfil que já existe no banco (ID 2)
-        
+
         Perfil perfilPadrao = perfilRepository.findById(2L)
                 .orElseThrow(() -> new RuntimeException("Perfil USER não encontrado!"));
 
