@@ -4,7 +4,10 @@ package com.forumhub.forum.service;
 import com.forumhub.forum.domain.Perfil;
 import com.forumhub.forum.domain.Usuario;
 
+import com.forumhub.forum.dto.UsuarioCreatDTO;
 import com.forumhub.forum.dto.UsuarioDTO;
+import com.forumhub.forum.enums.PerfilEnum;
+import com.forumhub.forum.excecoes.ResourceAlreadyRegistered;
 import com.forumhub.forum.excecoes.ResourceNotFoundException;
 import com.forumhub.forum.repositorio.PerfilRepository;
 import com.forumhub.forum.repositorio.RespostaRepository;
@@ -12,6 +15,7 @@ import com.forumhub.forum.repositorio.TopicoRepository;
 import com.forumhub.forum.repositorio.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +30,9 @@ public class UsuarioService {
     private TopicoRepository topicoRepository;
     @Autowired
     private RespostaRepository respostaRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private PerfilService perfilService;
@@ -46,20 +53,28 @@ public class UsuarioService {
     }
 
     @Transactional
-    public void save(Usuario usuario) {
-        // 1. Buscamos o perfil que já existe no banco (ID 2)
+    public void save(Usuario usuario){
 
-        Perfil perfilPadrao = perfilRepository.findById(2L)
-                .orElseThrow(() -> new RuntimeException("Perfil USER não encontrado!"));
+        usuarioRepository.findByEmail(usuario.getEmail())
+                .ifPresent(u -> {
+                    throw new ResourceAlreadyRegistered("Usuário já cadastrado com este e-mail");
+                });
 
-        // 2. Adicionamos o perfil à coleção do usuário
-        // É isso que faz o Hibernate preencher a tabela de ligação automaticamente!
+
+        usuario.setEmail(usuario.getEmail());
+        usuario.setNome(usuario.getEmail());
+        String rash = passwordEncoder.encode(usuario.getSenha());
+        usuario.setSenha(rash);
+
+        // 3. Atribuir o perfil USER (ID 2) usando o seu Enum
+        // getReferenceById é excelente aqui porque você já sabe o ID e evita um SELECT
+        Perfil perfilPadrao = perfilRepository.getReferenceById(PerfilEnum.USER.getId());
+
+        // Adiciona o perfil à lista de perfis do usuário
         usuario.getPerfis().add(perfilPadrao);
-
-        // 3. Salvamos o usuário.
-        // O Spring vai salvar o usuário e DEPOIS inserir na tabela usuario_perfis
         usuarioRepository.save(usuario);
     }
+
 
     @Transactional
     public void excluirUsuario(Long idUsuarioReal) {

@@ -39,7 +39,7 @@ public class UsuarioController {
         return  ResponseEntity.ok().body(usuario);
     }
 
-    @PostMapping
+    @PostMapping(value = "/cadastrar")
     public ResponseEntity<UsuarioDTO> create(@Valid @RequestBody UsuarioCreatDTO usuarioCreatDTO, UriComponentsBuilder uriComponentsBuilder){
         Usuario usuario = new Usuario(usuarioCreatDTO);
         usuarioService.save(usuario);

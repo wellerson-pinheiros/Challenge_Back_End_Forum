@@ -1,6 +1,9 @@
 package com.forumhub.forum.controller;
 
+import com.forumhub.forum.domain.Usuario;
+import com.forumhub.forum.dto.DadosTokenJWT;
 import com.forumhub.forum.dto.UsuarioLoginDTO;
+import com.forumhub.forum.service.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +23,15 @@ public class AutenticacaoController {
     @Autowired
     private AuthenticationManager manager;
 
+    @Autowired
+    private TokenService tokenService;
+
 @PostMapping
-    public ResponseEntity<Authentication> autenticar(@RequestBody @Valid UsuarioLoginDTO usuarioLoginDTO) {
+    public ResponseEntity autenticar(@RequestBody @Valid UsuarioLoginDTO usuarioLoginDTO) {
     UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(usuarioLoginDTO.email(), usuarioLoginDTO.senha());
     Authentication authentication = manager.authenticate(token);
+    var tokenJWT = tokenService.generarToken((Usuario) authentication.getPrincipal());
 
-    return ResponseEntity.ok(authentication);
+    return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
 }
 }

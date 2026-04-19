@@ -40,7 +40,7 @@ public class Usuario implements UserDetails {
 
 
     @JsonManagedReference
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "usuario_perfis",
             joinColumns = @JoinColumn(name = "usuario_id"),
