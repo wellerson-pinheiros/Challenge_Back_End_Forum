@@ -2,6 +2,7 @@ package com.forumhub.forum.controller;
 
 import com.forumhub.forum.dto.CursoDTO;
 import com.forumhub.forum.service.CursoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value ="/cursos")
+@SecurityRequirement(name = "bearer-key")
 public class CursoController {
 
     @Autowired

@@ -2,6 +2,7 @@ package com.forumhub.forum.controller;
 
 import com.forumhub.forum.dto.CategoriaSimplesDTO;
 import com.forumhub.forum.service.CategoriaService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/categorias")
+@SecurityRequirement(name = "bearer-key")
 public class CategoriaController {
 
     @Autowired

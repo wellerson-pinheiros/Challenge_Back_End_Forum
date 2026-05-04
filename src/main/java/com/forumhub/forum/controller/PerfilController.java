@@ -3,6 +3,7 @@ package com.forumhub.forum.controller;
 import com.forumhub.forum.domain.Perfil;
 import com.forumhub.forum.dto.PerfilDTO;
 import com.forumhub.forum.service.PerfilService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/perfils")
+@SecurityRequirement(name = "bearer-key")
 public class PerfilController {
 
     @Autowired

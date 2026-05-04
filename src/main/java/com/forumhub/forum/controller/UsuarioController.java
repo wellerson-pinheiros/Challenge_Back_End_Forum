@@ -4,6 +4,7 @@ import com.forumhub.forum.domain.Usuario;
 import com.forumhub.forum.dto.UsuarioCreatDTO;
 import com.forumhub.forum.dto.UsuarioDTO;
 import com.forumhub.forum.service.UsuarioService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,18 +23,21 @@ public class UsuarioController {
     UsuarioService usuarioService;
 
     @GetMapping
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<List<UsuarioDTO>> findAll(){
        List <UsuarioDTO> usuarios = usuarioService.findAll();
         return  ResponseEntity.ok().body(usuarios);
     }
 
     @GetMapping(value = "/{id}")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<UsuarioDTO> findById(@PathVariable Long id){
         UsuarioDTO usuario = usuarioService.findById(id);
         return  ResponseEntity.ok().body(usuario);
     }
 
     @GetMapping(value ="/email/{email}" )
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<UsuarioDTO> findByName(@Valid @PathVariable String email){
         UsuarioDTO usuario = usuarioService.findByEmail(email);
         return  ResponseEntity.ok().body(usuario);
@@ -48,12 +52,14 @@ public class UsuarioController {
     }
 
     @PutMapping
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<Void> update (@Valid @RequestBody UsuarioDTO usuarioDTO, UriComponentsBuilder uriComponentsBuilder){
         usuarioService.update(usuarioDTO);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping(value = "/{id}")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<Void> deleteById(@PathVariable Long id){
         usuarioService.excluirUsuario(id);
         return  ResponseEntity.noContent().build();
