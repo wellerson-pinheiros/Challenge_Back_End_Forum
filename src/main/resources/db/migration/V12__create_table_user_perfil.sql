@@ -1,18 +1,8 @@
--- ===============================
--- Migration: criar tabelas Usuario e Perfil e relacionamentos
--- ===============================
-
--- 1️⃣ Tabela de Perfis
-CREATE TABLE IF NOT EXISTS TB_PERFIL (
-    id BIGSERIAL PRIMARY KEY,
-    nome VARCHAR(100) UNIQUE NOT NULL
-);
+-- 1️⃣ Removido o CREATE de TB_PERFIL porque já existe na V7
 
 -- Populando perfis iniciais
-INSERT INTO TB_PERFIL (nome) VALUES
-('ADMIN'),
-('USER'),
-('MODERATOR');
+INSERT INTO TB_PERFIL (nome) VALUES ('ADMIN'), ('USER'), ('MODERATOR')
+ON CONFLICT (nome) DO NOTHING;
 
 -- 2️⃣ Tabela de Usuários
 CREATE TABLE IF NOT EXISTS TB_USUARIOS (
@@ -26,7 +16,8 @@ CREATE TABLE IF NOT EXISTS TB_USUARIOS (
 INSERT INTO TB_USUARIOS (nome, email, senha) VALUES
 ('Wellerson', 'wellerson@email.com', 'senha123'),
 ('Maria', 'maria@email.com', 'senha123'),
-('João', 'joao@email.com', 'senha123');
+('João', 'joao@email.com', 'senha123')
+ON CONFLICT (email) DO NOTHING;
 
 -- 3️⃣ Tabela de relacionamento Many-to-Many
 CREATE TABLE IF NOT EXISTS usuario_perfis (
@@ -37,13 +28,9 @@ CREATE TABLE IF NOT EXISTS usuario_perfis (
     CONSTRAINT fk_perfil FOREIGN KEY (perfil_id) REFERENCES TB_PERFIL(id) ON DELETE CASCADE
 );
 
--- Populando relacionamentos iniciais
--- Wellerson = ADMIN + USER
+-- Populando relacionamentos
 INSERT INTO usuario_perfis (usuario_id, perfil_id) VALUES
-(1, 1),  -- ADMIN
-(1, 2),  -- USER
--- Maria = USER
-(2, 2),
--- João = USER + MODERATOR
-(3, 2),
-(3, 3);
+(1, (SELECT id FROM TB_PERFIL WHERE nome = 'ADMIN')),
+(1, (SELECT id FROM TB_PERFIL WHERE nome = 'USER')),
+(2, (SELECT id FROM TB_PERFIL WHERE nome = 'USER'))
+ON CONFLICT DO NOTHING;

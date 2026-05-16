@@ -73,6 +73,8 @@ public class Usuario implements UserDetails {
     }
 
 
+
+
     public Long getId() {
         return id;
     }

@@ -3,6 +3,7 @@ package com.forumhub.forum.service;
 import com.forumhub.forum.domain.Respostas;
 import com.forumhub.forum.domain.Topico;
 import com.forumhub.forum.dto.AtualizarMensagemDTO;
+import com.forumhub.forum.dto.RespostaCreatDTO;
 import com.forumhub.forum.dto.RespostasDTO;
 import com.forumhub.forum.excecoes.ResourceNotFoundException;
 import com.forumhub.forum.repositorio.RespostaRepository;
@@ -40,7 +41,7 @@ public class RespostaService {
     }
 
     @Transactional
-    public void save(RespostasDTO respostasDTO) {
+    public void save(RespostaCreatDTO respostasDTO) {
 
         // primeiro verificar se a resposta existe
        Topico topico = topicoRepository.findById(respostasDTO.topico()).orElseThrow(()-> new ResourceNotFoundException("Tópico não encontrado"));

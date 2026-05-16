@@ -1,6 +1,7 @@
 package com.forumhub.forum.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.forumhub.forum.dto.RespostaCreatDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -44,6 +45,14 @@ public class Respostas {
         this.solucao = solucao;
         this.autor = autor;
     }
+
+    public Respostas(RespostaCreatDTO dto, Topico topico, Usuario autor) {
+        this.mensagem = dto.mensagem();
+        this.topico = topico;
+        this.autor = autor;
+        this.solucao = false; // Valor padrão para novas respostas
+    }
+
 
     public long getId() {
         return id;

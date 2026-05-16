@@ -1,5 +1,6 @@
 package com.forumhub.forum.controller;
 
+import com.forumhub.forum.dto.CursoCreatDTO;
 import com.forumhub.forum.dto.CursoDTO;
 import com.forumhub.forum.service.CursoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -44,7 +45,7 @@ public class CursoController {
     }
 
     @PostMapping
-    public ResponseEntity <Void> create(@Valid @RequestBody CursoDTO cursoDTO) {
+    public ResponseEntity <Void> create(@Valid @RequestBody CursoCreatDTO cursoDTO) {
         cursoService.save(cursoDTO);
         URI uri = URI.create("/cursos/");
         return ResponseEntity.created(uri).build();

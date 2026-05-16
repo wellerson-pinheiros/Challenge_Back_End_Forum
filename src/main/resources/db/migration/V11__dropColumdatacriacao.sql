@@ -1,1 +1,0 @@
-ALTER TABLE tb_respostas DROP COLUMN datacriacao;

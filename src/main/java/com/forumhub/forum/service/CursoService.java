@@ -2,6 +2,7 @@ package com.forumhub.forum.service;
 
 import com.forumhub.forum.domain.Categoria;
 import com.forumhub.forum.domain.Curso;
+import com.forumhub.forum.dto.CursoCreatDTO;
 import com.forumhub.forum.dto.CursoDTO;
 import com.forumhub.forum.excecoes.ResourceAlreadyRegistered;
 import com.forumhub.forum.excecoes.ResourceNotFoundException;
@@ -48,7 +49,7 @@ public class CursoService {
     }
 
     @Transactional
-    public void save(CursoDTO cursoDTO) {
+    public void save(CursoCreatDTO cursoDTO) {
 
         // 1. Verifica se o curso já existe
         Optional<Curso> cursobuscado = cursoRepository.findByNomeIgnoreCase(cursoDTO.nome());
@@ -69,7 +70,6 @@ public class CursoService {
         // 3. caso não existir a categoria e o curso, salva no banco de dados
 
         Curso curso = new Curso();
-        curso.setId(cursoDTO.id());
         curso.setNome(cursoDTO.nome());
         curso.setDescricao(cursoDTO.descricao());
         curso.setCategoria(categoria);

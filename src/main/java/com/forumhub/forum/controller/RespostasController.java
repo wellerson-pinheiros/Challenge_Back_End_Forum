@@ -1,6 +1,7 @@
 package com.forumhub.forum.controller;
 
 import com.forumhub.forum.dto.AtualizarMensagemDTO;
+import com.forumhub.forum.dto.RespostaCreatDTO;
 import com.forumhub.forum.dto.RespostasDTO;
 import com.forumhub.forum.service.RespostaService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -40,7 +41,7 @@ public class RespostasController {
     }
 
     @PostMapping
-    public ResponseEntity <Void> create(@Valid @RequestBody RespostasDTO respostasDTO) {
+    public ResponseEntity <Void> create(@Valid @RequestBody RespostaCreatDTO respostasDTO) {
         respostaService.save(respostasDTO);
         URI uri = URI.create("/respostas/");
         return ResponseEntity.created(uri).build();
