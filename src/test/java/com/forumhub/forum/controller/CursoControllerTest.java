@@ -7,9 +7,11 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MediaType;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -38,7 +40,6 @@ public class CursoControllerTest {
     void cadastrar_cenario1() throws Exception {
      var resposta =  mockMvc.perform(post("/cursos"))
                .andReturn().getResponse();
-
         assertThat(resposta.getStatus()).isEqualTo(400);
     }
 
@@ -69,7 +70,6 @@ public class CursoControllerTest {
                             .content(jsonBody))
                         .andReturn().getResponse();
 
-
         //assert (aqui é onde esperamos que o resultado seja o esperado)
         assertThat(resposta.getStatus()).isEqualTo(201);
     }
@@ -77,7 +77,7 @@ public class CursoControllerTest {
     @Test
     @DisplayName("Deve retorna código 409 se o nome do curso já existir no banco de dados, Não pode ter dois cursos com o mesmo nome ou mesmo id")
     @Transactional
-    void cadastrar_cenario3() throws Exception {
+    void curso_cenario3() throws Exception {
         // 1. ARRANGE (Preparar)
         Categoria categoria = new Categoria();
         categoria.setNome("BackEnd");
@@ -106,7 +106,6 @@ public class CursoControllerTest {
                         .content(jsonBody))
                 .andReturn().getResponse();
 
-
         //assert (aqui é onde esperamos que o resultado seja o esperado)
         assertThat(resposta.getStatus()).isEqualTo(409);
     }
@@ -114,7 +113,7 @@ public class CursoControllerTest {
     @Test
     @DisplayName("Testar se ao deletar um objeto no banco retorna 204 no contente")
     @Transactional
-    void cadastrar_cenario4() throws Exception {
+    void curso_cenario4() throws Exception {
         // 1. ARRANGE (Preparar)
         Categoria categoria = new Categoria();
         categoria.setNome("BackEnd");
@@ -132,9 +131,9 @@ public class CursoControllerTest {
     }
 
     @Test
-    @DisplayName("Testar se ao deletar um objeto no banco retorna 404 curso não existe")
+    @DisplayName("Testar se ao deletar um objeto que não existe no banco retorna 404 curso não existe")
     @Transactional
-    void cadastrar_cenario5() throws Exception {
+    void curso_cenario5() throws Exception {
 
         //arrange
         Long idQueNaoExiste = 999l;
@@ -146,6 +145,34 @@ public class CursoControllerTest {
         assertThat(resposta.getStatus()).isEqualTo(404);
     }
 
+    @Test
+    @DisplayName("Testar se ao deletar o curso ele fica de ativo para false")
+    @Transactional
+    void deletar_cenario6() throws Exception {
 
+        //Arrange
+        Categoria categoria = new Categoria();
+        categoria.setNome("BackEnd");
+        categoria.setDescricao("Descrição da categoria");
+        entityManager.persist(categoria); // Salva a categoria primeiro
+
+        Curso curso = new Curso();
+        curso.setCategoria(categoria);
+        curso.setNome("Java");
+        //curso.setAtivo(true); // Garante que ele começa ativo
+        entityManager.persist(curso); // Salva o curso
+
+        // Action
+
+        var resposta = mockMvc.perform(delete("/cursos/{id}", curso.getId())).andReturn().getResponse();
+
+        assertThat(resposta.getStatus()).isEqualTo(204);
+
+        // Agora validamos a regra de negócio: o curso ainda existe no banco, mas está inativo?
+        Curso cursoAposExclusao = entityManager.find(Curso.class, curso.getId());
+
+        assertThat(cursoAposExclusao).isNotNull(); // O registro NÃO foi apagado do banco
+        assertThat(cursoAposExclusao.getAtivo()).isFalse(); // Mas a flag 'ativo' mudou para false!
+    }
 
 }
