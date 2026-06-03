@@ -1,6 +1,7 @@
 package com.forumhub.forum.service;
 
 import com.forumhub.forum.domain.Categoria;
+import com.forumhub.forum.dto.CategoriaResponseDTO;
 import com.forumhub.forum.dto.CategoriaSimplesDTO;
 import com.forumhub.forum.excecoes.ResourceAlreadyRegistered;
 import com.forumhub.forum.excecoes.ResourceNotFoundException;
@@ -26,9 +27,9 @@ public class CategoriaService {
                 .toList();
     }
 
-    public CategoriaSimplesDTO findById(Long id){
+    public CategoriaResponseDTO findById(Long id){
         Categoria categoria = categoriaRepositorio.findById(id).orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada"));
-        return new CategoriaSimplesDTO(categoria);
+        return new CategoriaResponseDTO(categoria);
     }
 
     @Transactional

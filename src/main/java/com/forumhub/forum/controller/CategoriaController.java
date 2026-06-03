@@ -1,5 +1,6 @@
 package com.forumhub.forum.controller;
 
+import com.forumhub.forum.dto.CategoriaResponseDTO;
 import com.forumhub.forum.dto.CategoriaSimplesDTO;
 import com.forumhub.forum.service.CategoriaService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -26,8 +27,8 @@ public class CategoriaController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity <CategoriaSimplesDTO> findById(@PathVariable Long id){
-        CategoriaSimplesDTO categoria = categoriaService.findById(id);
+    public ResponseEntity <CategoriaResponseDTO> findById(@PathVariable Long id){
+        CategoriaResponseDTO categoria = categoriaService.findById(id);
         return ResponseEntity.ok().body(categoria);
     }
 
