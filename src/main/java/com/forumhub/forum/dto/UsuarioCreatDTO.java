@@ -8,10 +8,11 @@ import jakarta.validation.constraints.Pattern;
 public record UsuarioCreatDTO (
         @NotBlank(message = "O nome do usuário é obrigatório")
         String nome,
+
         @Email
         @NotNull
         String email,
-        @NotNull
+
         @NotBlank
         @Pattern(
                 regexp = "^(?=.*[a-zA-Z])(?=.*[0-9]).{3,}$",

@@ -8,6 +8,7 @@ import java.time.Instant;
 public record TopicoDTO(Long id,
                         @NotBlank(message = "O titulo não pode ser vazio.")
                         String titulo,
+                        @NotBlank(message = " A mensagem não pode ser vazia")
                         String mensagem,
                         Instant dataCriacao,
                         Enum status ,

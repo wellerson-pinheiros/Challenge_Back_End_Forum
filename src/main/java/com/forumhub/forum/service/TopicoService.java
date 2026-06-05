@@ -46,6 +46,7 @@ public class TopicoService {
 
     @Transactional
     public void save(TopicoDTO topicoDTO) {
+
         // primeiro verificar se o curso existe
         Curso curso = cursoRepository.findById(topicoDTO.cursoId()).orElseThrow(()-> new ResourceNotFoundException("Curso não encontrado"));
         Usuario usuario = usuarioRepository.findById(topicoDTO.usuarioId()).orElseThrow(()-> new ResourceNotFoundException("Usuário não encontrado"));

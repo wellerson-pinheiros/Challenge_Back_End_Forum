@@ -54,7 +54,7 @@ public class CategoriaControllerTest {
     }
 
     @Test
-    @DisplayName("Deve retorna código 402 created ao salva uma categoria no banco de dados")
+    @DisplayName("Deve retorna código 201 created ao salva uma categoria no banco de dados")
     @Transactional
     public void cadastro_cenario2() throws Exception {
 

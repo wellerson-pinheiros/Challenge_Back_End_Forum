@@ -2,12 +2,14 @@ package com.forumhub.forum.service;
 
 import com.forumhub.forum.domain.Respostas;
 import com.forumhub.forum.domain.Topico;
+import com.forumhub.forum.domain.Usuario;
 import com.forumhub.forum.dto.AtualizarMensagemDTO;
 import com.forumhub.forum.dto.RespostaCreatDTO;
 import com.forumhub.forum.dto.RespostasDTO;
 import com.forumhub.forum.excecoes.ResourceNotFoundException;
 import com.forumhub.forum.repositorio.RespostaRepository;
 import com.forumhub.forum.repositorio.TopicoRepository;
+import com.forumhub.forum.repositorio.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,9 @@ public class RespostaService {
 
     @Autowired
     private TopicoRepository topicoRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public List<RespostasDTO> findAll() {
         List <Respostas> respostas = respostaRepository.findAll();
@@ -46,11 +51,14 @@ public class RespostaService {
         // primeiro verificar se a resposta existe
        Topico topico = topicoRepository.findById(respostasDTO.topico()).orElseThrow(()-> new ResourceNotFoundException("Tópico não encontrado"));
 
+       Usuario usuario = usuarioRepository.findById(respostasDTO.usuarioID()).orElseThrow(() -> new ResourceNotFoundException("Usuario altor não encontrado"));
+
        Respostas respostas = new Respostas();
        respostas.setMensagem(respostasDTO.mensagem());
        respostas.setDatacriacao(Instant.now());
        respostas.setSolucao(false);
        respostas.setTopico(topico);
+       respostas.setAutor(usuario);
        respostaRepository.save(respostas);
     }
 
